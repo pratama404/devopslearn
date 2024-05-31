@@ -1,0 +1,17 @@
+apiVersion: v1 # Versi API Kubernetes dan jenis objek yang akan digunakan (Service)
+kind: Service # Jenis objek Kubernetes yang akan dibuat (Service)
+
+metadata:
+  name: karsajobs-service # Nama Service yang akan dibuat
+
+spec:
+  selector:
+    app: karsajobs # Selector untuk memilih pod-pod yang ingin di-associate dengan Service
+
+  ports:
+    - protocol: TCP # Protocol yang digunakan (TCP)
+      port: 8080 # Port yang akan di-expose di dalam Service
+      targetPort: 8080 # Port yang diarahkan ke pod-pod yang sesuai dengan selector
+      nodePort: 30001 # Atur nilai nodePort sesuai kebutuhan Anda
+
+  type: NodePort # Jenis Service, dalam hal ini, ClusterIP yang memberikan alamat IP internal Kubernetes

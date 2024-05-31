@@ -1,0 +1,18 @@
+version: 2 # Versi konfigurasi CI/CD CircleCI yang digunakan
+
+jobs: # Definisi pekerjaan yang akan dieksekusi dalam CI/CD
+  lint-dockerfile: # Pekerjaan untuk melakukan linting terhadap Dockerfile frontend
+    docker: # Menggunakan Docker sebagai lingkungan eksekusi
+      - image: hadolint/hadolint # Menggunakan image Docker dari hadolint/hadolint
+    steps: # Langkah-langkah yang akan dieksekusi dalam pekerjaan ini
+      - checkout:
+          path: ~/karsajobs-ui # Sesuaikan dengan path proyek frontend Anda
+      - run: hadolint karsajobs-ui/Dockerfile # Menjalankan perintah hadolint pada Dockerfile frontend
+
+  build-app-karsajobs-ui: # Pekerjaan untuk membangun dan menerbitkan image Docker untuk Karsajobs UI
+    docker: # Menggunakan Docker sebagai lingkungan eksekusi
+      - image: docker:latest # Menggunakan image Docker terbaru
+    steps: # Langkah-langkah yang akan dieksekusi dalam pekerjaan ini
+      - checkout:
+          path: ~/karsajobs-ui # Sesuaikan dengan path proyek frontend Anda
+      - run: bash karsajobs-ui/build_push_image_karsajobs_ui.sh # Menjalankan skrip bash untuk membangun dan menerbitkan image Docker Karsajobs UI

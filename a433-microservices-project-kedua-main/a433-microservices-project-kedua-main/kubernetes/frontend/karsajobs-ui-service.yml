@@ -1,0 +1,16 @@
+apiVersion: v1 # Versi API Kubernetes dan jenis objek yang akan digunakan (Service)
+kind: Service # Jenis objek Kubernetes yang akan dibuat (Service)
+
+metadata:
+  name: karsajobs-ui-service # Nama Service yang akan dibuat
+
+spec:
+  selector:
+    app: karsajobs-ui # Selector untuk memilih pod-pod yang ingin di-associate dengan Service
+
+  ports:
+    - protocol: TCP # Protocol yang digunakan (TCP)
+      port: 8000 # Port yang akan di-expose di dalam Service
+      targetPort: 8000 # Port yang diarahkan ke pod-pod yang sesuai dengan selector
+
+  type: NodePort # Jenis Service, dalam hal ini, LoadBalancer yang membuat layanan dapat diakses dari luar cluster melalui alamat IP eksternal

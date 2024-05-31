@@ -1,0 +1,29 @@
+apiVersion: v1 # Versi API Kubernetes dan jenis objek yang akan digunakan (PersistentVolume)
+kind: PersistentVolume # Jenis objek Kubernetes yang akan dibuat (PersistentVolume)
+
+metadata:
+  name: mongo-pv # Nama PersistentVolume yang akan dibuat
+
+spec:
+  capacity:
+    storage: 1Gi # Kapasitas penyimpanan yang dialokasikan untuk PersistentVolume
+  accessModes:
+    - ReadWriteOnce # Mode akses, dalam hal ini, ReadWriteOnce yang berarti dapat diakses oleh satu node dalam mode read-write
+  persistentVolumeReclaimPolicy: Retain # Kebijakan untuk pengelolaan PersistentVolume setelah dihapus
+  storageClassName: standard # Nama class penyimpanan yang akan digunakan oleh PersistentVolume
+  hostPath:
+    path: "/mnt/data" # Path pada host yang akan di-mount ke dalam PersistentVolume
+---
+apiVersion: v1 # Versi API Kubernetes dan jenis objek yang akan digunakan (PersistentVolumeClaim)
+kind: PersistentVolumeClaim # Jenis objek Kubernetes yang akan dibuat (PersistentVolumeClaim)
+
+metadata:
+  name: mongo-pvc # Nama PersistentVolumeClaim yang akan dibuat
+
+spec:
+  accessModes:
+    - ReadWriteOnce # Mode akses, dalam hal ini, ReadWriteOnce yang sesuai dengan PersistentVolume
+  resources:
+    requests:
+      storage: 1Gi # Permintaan kapasitas penyimpanan untuk PersistentVolumeClaim
+  storageClassName: standard # Nama class penyimpanan yang harus sesuai dengan class PersistentVolume yang diinginkan

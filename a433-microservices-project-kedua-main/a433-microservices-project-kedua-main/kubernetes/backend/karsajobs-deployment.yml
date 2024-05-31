@@ -1,0 +1,41 @@
+apiVersion: apps/v1 # Versi API Kubernetes dan jenis objek yang akan digunakan (Deployment)
+kind: Deployment # Jenis objek Kubernetes yang akan dideploy
+
+metadata:
+  name: karsajobs-deployment # Nama Deployment
+spec:
+  replicas: 3 # Jumlah replika yang akan di-deploy
+
+  selector:
+    matchLabels:
+      app: karsajobs # Selector untuk memilih pod-pod yang terkait dengan aplikasi "karsajobs"
+
+  template:
+    metadata:
+      labels:
+        app: karsajobs # Label yang akan diterapkan pada pod-pod yang di-generate oleh Deployment
+    spec:
+      containers:
+        - name: karsajobs # Nama container
+          image: rahielhfz/karsajobs:latest # Image Docker yang akan digunakan
+          ports:
+            - containerPort: 8080 # Port yang akan di-expose di dalam container
+
+          env: # Variabel lingkungan untuk dikonfigurasi di dalam container
+            - name: APP_PORT # Nama variabel lingkungan
+              value: "8080" # Nilai variabel lingkungan
+
+            - name: MONGO_HOST
+              value: "mongo-service" # Gunakan nama Service MongoDB di sini
+
+            - name: MONGO_USER # Nama variabel lingkungan untuk username MongoDB
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret # Nama secret yang berisi informasi MongoDB
+                  key: MONGO_ROOT_USERNAME # Kunci dalam secret untuk username MongoDB
+
+            - name: MONGO_PASS # Nama variabel lingkungan untuk password MongoDB
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret # Nama secret yang berisi informasi MongoDB
+                  key: MONGO_ROOT_PASSWORD # Kunci dalam secret untuk password MongoDB
